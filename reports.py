@@ -38,11 +38,11 @@ def reportsData(userId, hId, driver):
     
     try:
         reportTable = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, 'div.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+            EC.presence_of_element_located((By.CSS_SELECTOR, 'div#quarep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
         )
         reportTable.click()
-        print('Template Reports Table Opened Successfully')
+        print('Quarterly Reports Table Opened Successfully')
     except TimeoutException:
-        print("Template Reports Table not found")
+        print("Quarterly Reports Table not found")
     
     time.sleep(10)
