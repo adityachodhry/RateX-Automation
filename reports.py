@@ -20,6 +20,7 @@ def reportsData(userId, hId, driver):
 
     today = datetime.now()
     fromDate = today.strftime("%Y-%m-%d")
+    endDate = (today + timedelta(days=1)).strftime("%Y-%m-%d")
 
     TemplateReports = f'https://rxserver.retvenslabs.com/api/reports/getTemplateReports?userId={userId}&hId={hId}'
 
@@ -47,16 +48,31 @@ def reportsData(userId, hId, driver):
     
     time.sleep(10)
 
-    try:
-        backButton = WebDriverWait(driver, 10).until(
-            EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.bg-[#3361FF].w-fit.flex.items-center.justify-center.cursor-pointer.rounded-lg.h-[36px].py-1.px-3'))
-        )
-        backButton.click()
-        print("Back Successfully")
-    except TimeoutException:
-        print("No Back Button found")
+    reportsData = f'https://rxserver.retvenslabs.com/api/reports/getQuarterlyReport?userId={userId}&hId={hId}&startDate={fromDate}&endDate={endDate}&whatsAppNotify=false'
 
-    time.sleep(3)
+    response_1 = requests.request("GET", reportsData)
+
+    if response.status_code == 200:
+        result_1 = response_1.json()
+        data_slot_1 = result_1.get('data', {})
+        
+        if data_slot_1:
+            print("Quarterly Reports Data is Available")
+        else:
+            print("Quarterly Reports Data is not available")
+    else:
+        print(f"Request failed with status code: {response.status_code}")
+
+    # try:
+    #     backButton = WebDriverWait(driver, 10).until(
+    #         EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.bg-[#3361FF].w-fit.flex.items-center.justify-center.cursor-pointer.rounded-lg.h-[36px].py-1.px-3'))
+    #     )
+    #     backButton.click()
+    #     print("Back Successfully")
+    # except TimeoutException:
+    #     print("No Back Button found")
+
+    # time.sleep(3)
 
     # try:
     #     monthReportTable = WebDriverWait(driver, 10).until(
