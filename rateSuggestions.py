@@ -35,4 +35,3 @@ def suggestionCalendar(userId, hId, driver):
     else:
         print(f"Request failed with status code: {response.status_code}")
 
-    # driver.quit()

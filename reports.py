@@ -37,12 +37,89 @@ def reportsData(userId, hId, driver):
         print(f"Request failed with status code: {response.status_code}")
     
     try:
-        reportTable = WebDriverWait(driver, 10).until(
+        quarterlyReportTable = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, 'div#quarep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
         )
-        reportTable.click()
+        quarterlyReportTable.click()
         print('Quarterly Reports Table Opened Successfully')
     except TimeoutException:
         print("Quarterly Reports Table not found")
     
     time.sleep(10)
+
+    try:
+        backButton = WebDriverWait(driver, 10).until(
+            EC.element_to_be_clickable((By.CSS_SELECTOR, 'div.bg-[#3361FF].w-fit.flex.items-center.justify-center.cursor-pointer.rounded-lg.h-[36px].py-1.px-3'))
+        )
+        backButton.click()
+        print("Back Successfully")
+    except TimeoutException:
+        print("No Back Button found")
+
+    time.sleep(3)
+
+    # try:
+    #     monthReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#moenrep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     monthReportTable.click()
+    #     print('Month End Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Month End Report Table not found")
+    
+    # time.sleep(10)
+
+    # try:
+    #     yearReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#yeenrep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     yearReportTable.click()
+    #     print('Year End Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Year End Report Table not found")
+    
+    # time.sleep(10)
+
+    # try:
+    #     parityReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#parrep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     parityReportTable.click()
+    #     print('Parity Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Parity Report Table not found")
+    
+    # time.sleep(10)
+
+    # try:
+    #     paceReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#parep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     paceReportTable.click()
+    #     print('Pace Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Pace Report Table not found")
+    
+    # time.sleep(10)
+
+    # try:
+    #     sourceReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#sourep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     sourceReportTable.click()
+    #     print('Source Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Source Report Table not found")
+    
+    # time.sleep(10)
+
+    # try:
+    #     revenueReportTable = WebDriverWait(driver, 10).until(
+    #         EC.presence_of_element_located((By.CSS_SELECTOR, 'div#revrep.p-4.border-2.rounded-lg.cursor-pointer.bg-white.hover\\:pl-5'))
+    #     )
+    #     revenueReportTable.click()
+    #     print('Revenue Report Table Opened Successfully')
+    # except TimeoutException:
+    #     print("Revenue Report Table not found")
+    
+    # time.sleep(10)
