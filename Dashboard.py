@@ -38,7 +38,6 @@ def dashboard(username, password, userId, hId, driver):
     bold_font = Font(bold=True)
     next_row = ws.max_row + 1
 
-    # Function to get current datetime as a string
     def get_current_datetime():
         return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -99,89 +98,6 @@ def dashboard(username, password, userId, hId, driver):
         else:
             status = f"Request failed with status code: {response.status_code}; Unable to retrieve data"
         ws.append([get_current_datetime(), check_name, status])
-
-    try:
-        monthReportContainer = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.flex.gap-4.items-center.cursor-pointer'))
-        )
-
-        firstDiv = monthReportContainer.find_element(By.CSS_SELECTOR, 'div:first-child')
-        
-        driver.execute_script("arguments[0].click();", firstDiv)
-
-        ws.append([get_current_datetime(), "Month End Report", "Successfully interacted with the first div in Month End Report"])
-        print("Successfully interacted with the first div in Month End Report")
-
-        dateElement = WebDriverWait(driver, 10).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '.flex.items-center.justify-center.p-2.font-semibold p'))
-        )
-        date_text = dateElement.text.strip()
-        print(f"Month End Report Date Text: {date_text}")
-
-        time.sleep(10)
-
-        if '(' in date_text and ')' in date_text:
-            date_range = date_text.split('(')[1].split(')')[0].strip()
-            start_date_str, end_date_str = date_range.split('-')
-            start_date = datetime.strptime(start_date_str.strip(), '%d %b %Y')
-            end_date = datetime.strptime(end_date_str.strip(), '%d %b %Y')
-
-            if (end_date - start_date).days == 30 or (end_date - start_date).days == 31:
-                ws.append([get_current_datetime(), "Month End Report Date Range", "Correct date range shown (one month apart)"])
-                print("Correct date range shown (one month apart)")
-            else:
-                img_stream = take_screenshot_and_return()
-                img = PILImage.open(img_stream)
-                img.save(img_stream, format='PNG')
-                img.seek(0)
-                ws.append([get_current_datetime(), "Month End Report Date Range", "Incorrect date range shown (not one month apart)"])
-                ws.add_image(Image(img_stream), f"B{ws.max_row}")
-                print("Incorrect date range shown (not one month apart)")
-            time.sleep(10)
-        else:
-            img_stream = take_screenshot_and_return()
-            img = PILImage.open(img_stream)
-            img.save(img_stream, format='PNG')
-            img.seek(0)
-            ws.append([get_current_datetime(), "Month End Report Date Range", "Date range format is incorrect or not found"])
-            ws.add_image(Image(img_stream), f"B{ws.max_row}")
-            print("Date range format is incorrect or not found")
-        
-        time.sleep(10)
-
-        today = datetime.today()
-        first_day_of_last_month = (today.replace(day=1) - timedelta(days=1)).replace(day=1)
-        last_day_of_last_month = first_day_of_last_month.replace(day=30)
-
-        start_date_str = first_day_of_last_month.strftime('%Y-%m-%d')
-        end_date_str = last_day_of_last_month.strftime('%Y-%m-%d')
-
-        month_end_report_url = f'https://rxserver.retvenslabs.com/api/reports/getMonthEndReport?userId={userId}&hId={hId}&startDate={start_date_str}&endDate={end_date_str}&whatsAppNotify=false'
-        response_1 = requests.get(month_end_report_url)
-
-        if response_1.status_code == 200:
-            result_1 = response_1.json()
-            data_slot_1 = result_1.get('data', {})
-            if data_slot_1: 
-                status = "Available; Data retrieved successfully"
-            else:
-                status = "Not Available; No data found in the response"
-        else:
-            status = f"Request failed with status code: {response_1.status_code}; Unable to retrieve data"
-
-        ws.append([get_current_datetime(), "Month End Report Data", status])
-        print(f"Month End Report Data: {status}")
-
-    except TimeoutException:
-        img_stream = take_screenshot_and_return()
-        img = PILImage.open(img_stream)
-        img.save(img_stream, format='PNG')
-        img.seek(0)
-        ws.append([get_current_datetime(), "Month Report", "Month Report not found"])
-        ws.add_image(Image(img_stream), f"B{ws.max_row}")
-        print("Month Report not found")
-    
-    time.sleep(10)
 
     wb.save(excel_filename)
     print(f"Excel file saved as {excel_filename}")
